@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .box {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+            height: auto;
+        }
+
+        .search {
+            display: inline;
+            margin-top: 50px;
+            margin-bottom: 50px;
+        }
+
+        #search {
+            width: 200px;
+            height: 20px;
+        }
+
+        #searchButton {
+            width: 50px;
+            height: 20px;
+        }
+        .imgBox {
+            display: grid;
+        }
+    </style>
+</head>
+<body>
+    <div class="box">
+        <div class="search">
+            <input type="text" id="search">
+            <button id="searchButton">search</button>
+            <p id="error"></p>
+        </div>
+        <div class="img-box"></div>
+    </div>
+    
+</body>
+<script>
+
+const search = document.getElementById('search')
+const searchBtn = document.getElementById('searchButton')
+const images = document.getElementById('images')
+const errorMsg = document.getElementById('error')
+const imgBox = document.querySelector('.img-box')
+
+searchBtn.addEventListener('click', () => {
+    fetch(`https://api.unsplash.com/search/photos/?query=${search.value}&client_id=xaUzy7u5limy_DThbmqI3EARaUm7WO252ZH4yBxIQTI`)
+    .then(response => response.json())
+    .then(data => {
+        if (data.results && data.results.length > 0) {
+            imgBox.innerHTML = ''
+            data.results.forEach(result => {
+                const img = document.createElement('img')
+                const box = document.querySelector('.box')
+                img.src = result.urls.small
+                img.width = '300'
+                img.classList.add('img')
+                imgBox.appendChild(img)
+            });
+        } else {
+            console.log('No image results found.');
+        }
+    })
+})
+
+</script>
+</html>
